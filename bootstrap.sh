@@ -72,6 +72,7 @@ if [ ! "$RCM_EXISTS" ]; then
     notice "Installation of rcm is not automated"
     notice "https://github.com/thoughtbot/rcm"
     error "Please install RCM and rerun me"
+  fi # if OS X
 fi # RCM is installed
 
 exists tmux
@@ -81,10 +82,20 @@ if [ ! "$TMUX_EXISTS" ]; then
   notice "tmux is recommended but not required. It is currently not instaled"
 fi
 
+####
+#
+# Do the deed. Clone it all!
+#
+####
 git clone https://github.com/dmiedema/vimrc "$HOME/.dotfiles.vimrc"
 git clone https://github.com/dmiedema/zshrc "$HOME/.dotfiles.zshrc"
 git clone https://github.com/dmiedema/tmux.conf "$HOME/.dotfiles.tmux.conf"
+git clone https://github.com/dmiedema/newdots "$HOME/.dorfiles.newdots"
 
-
-# clone the other repos, tmux, zsh, vimrc & link them
+####
+#
+# Link it up!
+#
+####
+rcup -x "README*" "LICENSE*" -d "$HOME/.dotfiles.vimrc" -d "$HOME/.dotfiles.zshrc" -d "$HOME/.dotfiles.tmux.conf"
 
