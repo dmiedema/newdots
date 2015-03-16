@@ -87,10 +87,20 @@ fi
 # Do the deed. Clone it all!
 #
 ####
+# Install antigen
+git clone https://github.com/zsh-users/antigen "$HOME/.antigen"
+
+# TPM (tmux plugin manager)
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Clone al my repos down now
 git clone https://github.com/dmiedema/vimrc "$HOME/.dotfiles.vimrc"
 git clone https://github.com/dmiedema/zshrc "$HOME/.dotfiles.zshrc"
 git clone https://github.com/dmiedema/tmux.conf "$HOME/.dotfiles.tmux.conf"
-git clone https://github.com/dmiedema/newdots "$HOME/.dorfiles.newdots"
+git clone https://github.com/dmiedema/newdots "$HOME/.dotfiles.newdots"
 
 ####
 #
