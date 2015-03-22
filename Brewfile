@@ -9,6 +9,7 @@ install bison
 install brew-cask
 install cairo
 install carthage
+install cdargs
 install cfitsio
 install chisel
 install clang-format
