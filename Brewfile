@@ -70,11 +70,13 @@ install little-cms2
 install lua
 install lynx
 install makedepend
+install markdown
 install mobile-shell
 install moreutils
 install mpfr
 install mysql
 install ngrep
+install nmap
 install objc-codegenutils
 install openexr
 install openjpeg
@@ -107,6 +109,7 @@ install ttyrec
 install uncrustify
 install vim --with-lua
 install vips
+install watchman
 install wget
 install xcproj
 install xctool
@@ -114,3 +117,6 @@ install xz
 install youtube-dl
 install zeromq
 install zsh
+install zsh-completions
+install zsh-syntax-highlighting
+
