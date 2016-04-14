@@ -1,111 +1,57 @@
 #!/usr/bin/env bash
+echo "Creating src directory"
+mkdir -p ~/src
 
-####
-#
-# Setup & helper functions
-#
-####
-exists() {
-  if command -v "$1" &> /dev/null; then
-    return 1
-  else
-    return 0
-  fi
-}
+# Install dependencies/tools
+echo "Installing vim-plug & zgen"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-msg() {
-  printf '%b\n' "$1" >&2
-}
-
-success() {
-  if [ "$ret" -eq 0 ]; then
-    msg "\e[32m[✔]\e[0m ${1}${2}"
-  fi
-}
-
-notice() {
-  msg "\e[33m[!]\e[0m ${1}${2}"
-}
-
-error() {
-  msg "\e[31m[✘]\e[0m ${1}${2}"
-  exit 1
-}
-
-####
-#
-# Actual bootstrapping
-#
-####
-
-####
-# Verify Prewrecks
-####
-exists git
-GIT_EXISTS=$?
-
-if [ ! "$GIT_EXISTS" ]; then
-  error "git is required"
+if [[ ! -d "$HOME/.zgen" ]]; then
+  git clone https://github.com/tarjoilija/zgen ~/.zgen
+else
+  zgen update
 fi
 
-exists antigen
-ANTIGEN_EXISTS=$?
-
-if [ ! "$ANTIGEN_EXISTS" ]; then
-  notice "installing antigen..."
-  git clone https://github.com/zsh-users/antigen.git "$HOME/.antigen"
+# Clone repos
+if [[ ! -d "$HOME/src/vimrc" ]]; then
+  git clone https://github.com/dmiedema/vimrc.git ~/src/vimrc
+else
+  pushd ~/src/vimrc; git pull; popd
+fi
+if [[ ! -d "$HOME/src/zshrc" ]]; then
+  git clone https://github.com/dmiedema/zshrc.git ~/src/zshrc
+else
+  pushd ~/src/zshrc; git pull; popd;
+fi
+if [[ ! -d "$HOME/src/tmux" ]]; then
+  git clone https://github.com/dmiedema/tmux.conf.git ~/src/tmux
+else
+  pushd ~/src/tmux; git pull; popd;
 fi
 
-exists lsrc
-RCM_EXISTS=$?
-
-if [ ! "$RCM_EXISTS" ]; then
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    exists brew
-    if [ ! $? ]; then
-      error "I need homebrew plz"
-    fi
-    brew tap thoughtbot/formulae
-    brew install rcm
-    brew install tmux vim zsh mosh xctool
-  else # not on OS X
-    notice "Installation of rcm is not automated"
-    notice "https://github.com/thoughtbot/rcm"
-    error "Please install RCM and rerun me"
-  fi # if OS X
-fi # RCM is installed
-
-exists tmux
-TMUX_EXISTS=$?
-
-if [ ! "$TMUX_EXISTS" ]; then
-  notice "tmux is recommended but not required. It is currently not instaled"
+# Link dotfiles
+echo "Linking dotfiles"
+if [[ ! -a "$HOME/.vimrc" ]]; then
+  ln -s ~/src/vimrc/vimrc "$HOME/.vimrc"
+  ln -s ~/src/vimrc/vimrc.bundles "$HOME/.vimrc.bundles"
+fi
+if [[ ! -a "$HOME/.zshrc" ]]; then
+  ln -s ~/src/zshrc/zshrc "$HOME/.zshrc"
+fi
+if [[ ! -a "$HOME/.tmux.conf" ]]; then
+  ln -s ~/src/tmux.conf/tmux.conf "$HOME/.tmux.conf"
+fi
+if [[ ! -a "$HOME/.tmuxlinesnapshot.conf" ]]; then
+  ln -s ~/src/tmux.conf/tmuxlinesnapshot.conf.wombat256 "$HOME/.tmuxlinesnapshot.conf"
 fi
 
-####
-#
-# Do the deed. Clone it all!
-#
-####
-# Install antigen
-git clone https://github.com/zsh-users/antigen "$HOME/.antigen"
+if [[ -d "/usr/share/src/swift" && ! -a "$HOME/.zshrc.local" ]]; then
+  echo "export PATH=/usr/share/src/swift/usr/bin:$PATH" >> "$HOME/.zshrc.local"
+fi
 
-# TPM (tmux plugin manager)
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+echo "Installing Vim Plugins"
+vim +PlugInstall +qall
 
-# vim-plug
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# Clone al my repos down now
-git clone https://github.com/dmiedema/vimrc "$HOME/.dotfiles.vimrc"
-git clone https://github.com/dmiedema/zshrc "$HOME/.dotfiles.zshrc"
-git clone https://github.com/dmiedema/tmux.conf "$HOME/.dotfiles.tmux.conf"
-git clone https://github.com/dmiedema/newdots "$HOME/.dotfiles.newdots"
-
-####
-#
-# Link it up!
-#
-####
-rcup -x "README*" "LICENSE*" -d "$HOME/.dotfiles.vimrc" -d "$HOME/.dotfiles.zshrc" -d "$HOME/.dotfiles.tmux.conf"
+zsh # run ZSH to clone the repos down
 
