@@ -46,9 +46,23 @@ if [[ ! -a "$HOME/.tmuxlinesnapshot.conf" ]]; then
   ln -s ~/src/tmux.conf/tmuxlinesnapshot.conf.wombat256 "$HOME/.tmuxlinesnapshot.conf"
 fi
 
-if [[ -d "/usr/share/src/swift" && ! -a "$HOME/.zshrc.local" ]]; then
+function __add_swift_to_zshrc_local() {
   echo "export PATH=/usr/share/src/swift/usr/bin:$PATH" >> "$HOME/.zshrc.local"
-fi
+}
+
+if [[ "$OSTYPE" != "darwin"* ]]; then
+  SWIFT_INSTALLED=$(which swift &> /dev/null)
+  if [[ $SWIFT_INSTALLED ]]; then
+    if [[ -a "$HOME/.zshrc.local" ]]; then
+      IN_ZSHRC_LOCAL=$(grep -c 'swift' "$HOME/.zshrc.local")
+      if [[ $IN_ZSHRC_LOCAL -eq 0 ]]; then
+        __add_swift_to_zshrc_local
+      fi
+    else
+      __add_swift_to_zshrc_local
+    fi
+  fi # SWIFT_INSTALLED
+fi # not darwin platform
 
 echo "Installing Vim Plugins"
 vim +PlugInstall +qall
