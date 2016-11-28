@@ -26,6 +26,7 @@ else
 fi
 if [[ ! -d "$HOME/src/tmux" ]]; then
   git clone https://github.com/dmiedema/tmux.conf.git ~/src/tmux
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 else
   pushd ~/src/tmux; git pull; popd;
 fi
