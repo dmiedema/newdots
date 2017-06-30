@@ -25,7 +25,7 @@ else
   pushd ~/src/zshrc; git pull; popd;
 fi
 if [[ ! -d "$HOME/src/tmux" ]]; then
-  git clone https://github.com/dmiedema/tmux.conf.git ~/src/tmux
+  git clone https://github.com/dmiedema/tmux.conf.git ~/src/tmux.conf
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 else
   pushd ~/src/tmux; git pull; popd;
@@ -36,6 +36,9 @@ echo "Linking dotfiles"
 if [[ ! -a "$HOME/.vimrc" ]]; then
   ln -s ~/src/vimrc/vimrc "$HOME/.vimrc"
   ln -s ~/src/vimrc/vimrc.bundles "$HOME/.vimrc.bundles"
+fi
+if [[ ! -a "$HOME/.ycm_extra_conf.py" ]]; then
+  ln -s ~/src/vimrc/ycm_extra_conf.py "$HOME/.ycm_extra_conf.py"
 fi
 if [[ ! -a "$HOME/.zshrc" ]]; then
   ln -s ~/src/zshrc/zshrc "$HOME/.zshrc"
