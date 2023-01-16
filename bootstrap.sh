@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 echo "Creating src directory"
 mkdir -p ~/src
+mkdir -p ~/.config/bat
 
 # Install dependencies/tools
 echo "Installing vim-plug & zgen"
@@ -48,6 +49,12 @@ if [[ ! -a "$HOME/.tmux.conf" ]]; then
 fi
 if [[ ! -a "$HOME/.tmuxlinesnapshot.conf" ]]; then
   ln -s ~/src/tmux.conf/tmuxlinesnapshot.conf.wombat256 "$HOME/.tmuxlinesnapshot.conf"
+fi
+if [[ ! -a "$HOME/.aliases" ]]; then
+  ln -s ~/src/zshrc/aliases "$HOME/.aliases"
+fi
+if [[ ! -a "$HOME/.config/bat/config" ]]; then
+  ln -s ~/src/zshrc/bat_config "$HOME/.config/bat/config"
 fi
 
 function __add_swift_to_zshrc_local() {
