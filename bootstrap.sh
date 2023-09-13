@@ -18,18 +18,18 @@ fi
 if [[ ! -d "$HOME/src/vimrc" ]]; then
   git clone https://github.com/dmiedema/vimrc.git ~/src/vimrc
 else
-  pushd ~/src/vimrc; git pull; popd
+  pushd ~/src/vimrc; git pull origin main; popd
 fi
 if [[ ! -d "$HOME/src/zshrc" ]]; then
   git clone https://github.com/dmiedema/zshrc.git ~/src/zshrc
 else
-  pushd ~/src/zshrc; git pull; popd;
+  pushd ~/src/zshrc; git pull origin main; popd;
 fi
 if [[ ! -d "$HOME/src/tmux" ]]; then
   git clone https://github.com/dmiedema/tmux.conf.git ~/src/tmux.conf
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 else
-  pushd ~/src/tmux; git pull; popd;
+  pushd ~/src/tmux; git pull origin main; popd;
 fi
 
 # Link dotfiles
